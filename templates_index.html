@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Currency Detector</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Indian Currency Detector</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Check Currency</button>
+    </form>
+    <div id="result"></div>
+    <img id="uploaded-image" style="max-width: 500px;">
+
+    <script>
+        $(document).ready(function() {
+            $('#upload-form').submit(function(e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        $('#result').text('Result: ' + response.result);
+                        $('#uploaded-image').attr('src', 'data:image/jpeg;base64,' + response.image);
+                    },
+                    error: function() {
+                        $('#result').text('An error occurred');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
